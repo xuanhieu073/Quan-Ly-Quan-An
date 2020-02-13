@@ -40,7 +40,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-fn/
 
 # TypeScript v1 declaration files
 typings/
@@ -108,4 +107,4 @@ dist
 .vscode-test
 
 # db
-qlqa-backend/fn/
+opts.*
