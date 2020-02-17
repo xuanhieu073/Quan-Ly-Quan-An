@@ -73,6 +73,10 @@ router.post('/', (req, res) => {
         });
 });
 
+router.patch('/:id',(req,res)=>{
+    res.json(req.body)
+})
+
 
 router.delete('/:id', (req, res) => {
     if (req.params.id) {

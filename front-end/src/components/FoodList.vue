@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow mb-4">
-    <h4 class="card-header">Products</h4>
+    <h4 class="card-header">Danh sách món ăn</h4>
 
     <div v-if="empty" class="card-body">
       <p class="card-text">Không có dữ liệu.</p>

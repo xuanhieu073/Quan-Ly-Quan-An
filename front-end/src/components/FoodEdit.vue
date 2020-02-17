@@ -57,7 +57,6 @@ export default {
     },
 
     fetchProducts(catId) {
-      console.log(catId);
       axios
         .get(`http://localhost:3000/categories/${catId}/products`)
         .then(res => {
