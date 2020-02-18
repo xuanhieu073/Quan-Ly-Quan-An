@@ -1,6 +1,6 @@
 <template>
-    <div>
-    <b-container class="bv-example-row">
+    <div class="mt-4">
+    <b-container class="bv-example-row mb-4">
       <b-row>
         <b-col cols="4">
           <b-card no-body header-tag="header" footer-tag="footer" class="shadow">
