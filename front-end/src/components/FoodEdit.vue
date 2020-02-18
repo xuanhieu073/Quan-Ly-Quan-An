@@ -25,7 +25,7 @@
           </tbody>
         </table>
       </div>
-      <b-button v-if="hasMore" block variant="primary">Load more...</b-button>
+      <b-button v-if="hasMore" block variant="primary" @click="fetchProducts($route.params.catId,2)">Load more...</b-button>
     </div>
   </div>
 </template>
@@ -60,8 +60,8 @@ export default {
       axios
         .get(`http://localhost:3000/categories/${catId}/products`)
         .then(res => {
-          this.list = res.data.products;
-          this.hasMore = res.data.hasMore;
+          console.log(res)
+          this.list = res.data;
           this.empty = this.list.length === 0;
         })
         .catch(err => {

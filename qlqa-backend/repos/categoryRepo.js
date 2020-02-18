@@ -18,7 +18,21 @@ exports.load = function (id) {
 	return db.load(sql);
 }
 
-exports.add = entity => db.add(entity,'categories')
+exports.add = entity => db.add(entity,'categories');
+all: () => {
+    const sql = 'select * from categories';
+    return db.load(sql);
+};
+exports.loadById = id => {
+	const sql = `select * from categories where id = ${id}`;
+	return db.load(sql);
+};
+exports.add = entity => db.add(entity, 'categories');
+exports.del = id => db.del({ id: id }, 'categories');
+exports.patch = (id, entity) => {
+	delete entity.id;
+	return db.patch(entity, { CatID: id }, 'categories')
+};
 
 // exports.add = function (poco) {
 // 	// poco = {

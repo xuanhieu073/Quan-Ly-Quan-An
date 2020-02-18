@@ -25,22 +25,8 @@ const pool_query = promisify(pool.query).bind(pool);
 
 exports.load = sql => pool_query(sql);
 exports.add = (entity, tableName) => pool_query(`insert into ${tableName} set ?`, entity);
-
-// exports.load = function(sql) {
-//     return new Promise((resolve, reject) => {
-//         var cn = createConnection();
-//         cn.connect();
-//         cn.query(sql, function(error, rows, fields) {
-//             if (error) {
-//                 reject(error);
-//             } else {
-//                 resolve(rows);
-//             }
-
-//             cn.end();
-//         });
-//     });
-// }
+exports.del = (condition, tableName) => pool_query(`delete from ${tableName} where ?`, condition),
+exports.patch = (entity, condition, tableName) => pool_query(`update ${tableName} set ? where ?`, [entity, condition]),
 
 exports.insert = function(sql) {
     return new Promise((resolve, reject) => {

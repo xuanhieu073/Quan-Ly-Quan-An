@@ -22,13 +22,6 @@ var staticDir = express.static(
 );
 app.use(staticDir);
 
-// app.get('/', (req, res) => {
-// 	var ret = {
-// 		msg: 'hello from nodejs api'
-// 	};
-// 	res.json(ret);
-// });
-
 app.use('/categories', categoryCtrl);
 app.use('/users', userCtrl);
 app.use('/products', productCtrl);

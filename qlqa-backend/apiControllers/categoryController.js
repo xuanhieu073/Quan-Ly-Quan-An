@@ -73,10 +73,14 @@ router.post('/', (req, res) => {
         });
 });
 
-router.patch('/:id',(req,res)=>{
-    res.json(req.body)
+router.patch('/:id', async (req, res) => {
+    if (isNaN(req.params.id)) {
+      throw createError(400, 'Invalid id.');
+    }
+    console.log(req.params.id)
+    const rs = await categoryRepo.patch(req.params.id, req.body);
+    res.json(rs);
 })
-
 
 router.delete('/:id', (req, res) => {
     if (req.params.id) {
@@ -105,18 +109,19 @@ router.delete('/:id', (req, res) => {
     }
 });
 
-// router.get('/:id/products', (req, res) => {
-//     var id = req.params.id;
-//     productRepo.loadByCat(id).then(rows => {
-//         res.json(rows);
-//     }).catch(err => {
-//         console.log(err);
-//         res.statusCode = 500;
-//         res.end('View error log on console.');
-//     });
-// });
+router.get('/:id/products', async (req, res) => {
+    var page = 1;
+    if (req.query.page) {
+        page = +req.query.page;
+    }
 
-router.get('/:id/products', (req, res) => {
+    var id = req.params.id;
+    
+    const rows = await productRepo.loadByCat(id);
+    return res.json(rows);
+});
+
+router.get('/:id/products/page', (req, res) => {
     var page = 1;
     if (req.query.page) {
         page = +req.query.page;
