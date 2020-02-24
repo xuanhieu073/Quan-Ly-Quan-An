@@ -10,7 +10,7 @@
       <b-row>
         <b-col cols="8"></b-col>
         <b-col cols="4">
-          <b-button variant="primary float-right" v-b-modal.modal-1>Tạo mới</b-button>
+          <b-button variant="primary float-right" @click="OnCreate()">Tạo mới</b-button>
         </b-col>
       </b-row>
       <div class="row">
@@ -31,12 +31,12 @@
               <td>
                 <b-row>
                   <b-col class="px-0">
-                    <b-button variant="success" size="sm">
+                    <b-button variant="success" size="sm" @click="OnEdit(item)">
                       <BIconPencil />
                     </b-button>
                   </b-col>
                   <b-col class="px-0">
-                    <b-button variant="danger" size="sm">
+                    <b-button variant="danger" size="sm" @click="OnDelete(item)">
                       <BIconXCircle />
                     </b-button>
                   </b-col>
@@ -46,54 +46,57 @@
           </tbody>
         </table>
       </div>
-      <b-button
-        v-if="hasMore"
-        block
-        variant="primary"
-        @click="fetchProducts($route.params.catId,2)"
-      >Load more...</b-button>
     </div>
 
-    <b-modal size="lg" id="modal-1" :title="this.isEdit ? 'tạo mới' : '' ">
+    <b-modal size="lg" id="modal-action" ref="modal-action" v-model="visible" :title="this.isEdit ? 'tạo mới' : '' ">
       <b-row>
         <b-col cols="4" class="mt-2">
           <label for="ProName">ProName</label>
-          <b-input-group size="sm" prepend="ProName" append="">
-            <b-form-input></b-form-input>
+          <b-input-group size="sm" prepend="ProName">
+            <b-form-input v-model="prosec.ProName" ></b-form-input>
           </b-input-group>
         </b-col>
         <b-col cols="4" class="mt-2">
           <label for="TinyDes">TinyDes</label>
-          <b-input-group size="sm" prepend="TinyDes" append="">
-            <b-form-input></b-form-input>
+          <b-input-group size="sm" prepend="TinyDes">
+            <b-form-input v-model="prosec.TinyDes"></b-form-input>
           </b-input-group>
         </b-col>
-        <b-col cols="4" class="mt-2">
+        <!-- <b-col cols="4" class="mt-2">
           <label for="FullDes">FullDes</label>
-          <b-input-group size="sm" prepend="FullDes" append="">
-            <b-form-input></b-form-input>
+          <b-input-group size="sm" prepend="FullDes">
+            <b-form-input v-model="prosec.FullDes"></b-form-input>
           </b-input-group>
-        </b-col>
+        </b-col> -->
         <b-col cols="4" class="mt-2">
           <label for="Price">Price</label>
-          <b-input-group size="sm" prepend="Price" append="">
-            <b-form-input></b-form-input>
+          <b-input-group size="sm" prepend="Price">
+            <b-form-input v-model="prosec.Price"></b-form-input>
           </b-input-group>
         </b-col>
-        <b-col cols="4" class="mt-2">
+        <!-- <b-col cols="4" class="mt-2">
           <label for="Category">Category</label>
-          <b-input-group size="sm" prepend="Category" append="">
-            <b-form-input></b-form-input>
-          </b-input-group>
-        </b-col>
+            <b-input-group>
+              <template>
+                <b-form-select v-model="prosec.CatID" :options="catlist" size="sm"></b-form-select>
+              </template>
+            </b-input-group>
+        </b-col> -->
         <b-col cols="4" class="mt-2">
-            <label>Quantity</label>
-          <b-input-group size="sm" prepend="Quantity" append="">
-            <b-form-input></b-form-input>
+          <label>Quantity</label>
+          <b-input-group size="sm" prepend="Quantity" >
+            <b-form-input v-model="prosec.Quantity"></b-form-input>
           </b-input-group>
         </b-col>
         <b-col></b-col>
       </b-row>
+
+      <template v-slot:modal-footer>
+        <div class="w-100">
+          <b-button variant="secondary" size="sm" class="float-right" @click="visible=false" >Close</b-button>
+          <b-button variant="primary" size="sm" class="float-right mr-3" @click="EditSubmit()" >save</b-button>
+        </div>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -111,13 +114,16 @@ export default {
     return {
       list: [],
       empty: true,
-      hasMore: false,
-      isEdit: false
+      visible: false,
+      isEdit: false,
+      prosec: {},
+      catlist: [],
     };
   },
 
   mounted() {
     this.fetchProducts(this.$route.params.catId);
+    this.DDLCat();
   },
 
   watch: {
@@ -130,7 +136,27 @@ export default {
     format(val) {
       return `${val} đ`;
     },
-
+    DDLCat(){
+      this.fetchCat().then((res)=>{
+        const catdata = res.data;
+        for(let i = 0; i< catdata.length ; i++){
+          this.catlist.push({value: catdata[i].CatID, text: catdata[i].CatName})
+        }
+        console.log(this.catlist)
+      });
+    },
+    fetchCat(){
+      return axios.get(`http://localhost:3000/categories`);
+    },
+    fetchProduct(ProID){
+      axios.get(`http://localhost:3000/products/${ProID}`)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
     fetchProducts(catId) {
       axios
         .get(`http://localhost:3000/categories/${catId}/products`)
@@ -142,6 +168,83 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    OnEdit(product) {
+      console.log(product)
+      this.visible = true;
+      this.isEdit = true;
+      this.prosec = product;
+    },
+    OnCreate(){
+      this.visible = true;
+      this.isEdit = false;
+      this.prosec = {CatID: this.$route.params.catId};
+    },
+    EditSubmit(){
+      if(this.isEdit)
+      {
+        axios.patch(`http://localhost:3000/products/${this.prosec.ProID}`,this.prosec)
+        .then(res => {
+          console.log(res)
+          this.$swal({
+            icon: 'success',
+            title: 'This product has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      }
+      else
+      {
+        axios.post(`http://localhost:3000/products`,this.prosec)
+        .then(res => {
+          console.log(res);
+          this.list.push(res.data)
+          this.$swal({
+            icon: 'success',
+            title: `${res.data.ProName} has been saved`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      }
+    },
+    OnDelete(product){
+      console.log(product)
+      this.$swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+      .then((res)=>{
+        if (res.value) {
+          axios.delete(`http://localhost:3000/products/${product.ProID}`)
+          .then(() => {
+            for(let i =0;i<this.list.length;i++){
+              if(this.list[i].ProID == product.ProID){
+                this.list.splice(i, 1); 
+              }
+            }
+            this.$swal(
+              'Deleted!',
+              `${product.ProName} has been deleted.`,
+              'success')
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        }
+      })
     }
   }
 };

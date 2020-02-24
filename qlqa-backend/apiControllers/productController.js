@@ -65,4 +65,12 @@ router.get('/:id', (req, res) => {
     }
 });
 
+
+
+router.patch('/:id',(req,res)=>{
+    if(isNaN(req.params.id)){
+        res.statusCode(400).json("ivalid id");
+    }
+})
+
 module.exports = router;
