@@ -36,7 +36,12 @@ const routes = [
     path: '/cat-product-edit/:catId/food',
     name: 'CatProductEditProduct',
     component: () => import('../views/CatProductEdit.vue')
-  }
+  },
+  {
+    path: '/branch',
+    name: 'branch',
+    component: () => import('../views/Branch.vue')
+  },
 ]
 
 const router = new VueRouter({
