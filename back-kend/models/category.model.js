@@ -23,6 +23,6 @@ module.exports = {
 
   patch: (id, entity) => {
     delete entity.id;
-    return db.patch(entity, { id: id }, 'categories')
+    return db.patch(entity, { CatID: id }, 'categories')
   },
 };

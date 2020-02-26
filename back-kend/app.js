@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 app.use('/categories', require('./routes/category.route'));
 app.use('/products', require('./routes/product.route'));
 app.use('/chinhanh', require('./routes/chinhanh.route'));
+app.use('/tinhthanh', require('./routes/tinhthanh.route'));
 
 app.use((req, res, next) => {
   const err404 = createError(404, 'NOT FOUND');
