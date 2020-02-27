@@ -39,6 +39,9 @@ export default new Vuex.Store({
         console.error(err); 
       })
     },
+    comitchinhanhchange(state, list){
+      state.chinhanh.list = list;
+    },
     showChiNhanhDetail (state){
       state.chinhanh.vsbdetail = true
     },
@@ -47,6 +50,18 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    afetchchinhanh ({commit}) {
+      return new Promise((resolve,reject) => {
+        axios.get(`http://localhost:3000/chinhanh`)
+        .then(res => {
+          commit('comitchinhanhchange',res.data);
+          resolve(200)
+        })
+        .catch((err) => {
+          reject({status: 500,err})
+        })
+      })
+    }
   },
   modules: {
   }

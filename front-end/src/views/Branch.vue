@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState,mapMutations } from 'vuex'
+import { mapState,mapMutations,mapActions } from 'vuex'
 // import axios from "axios";
 import chinhanhmodal from './../components/chinhanh/chinhanhmodal'
 import tinhthanhddl from './../components/utils/tinhthanhddl'
@@ -74,8 +74,10 @@ export default {
       filter: {},
     };
   },
-  mounted() {
-    this.fetchChiNhanh();
+  async mounted() {
+    this.$store.dispatch('afetchchinhanh').then((status) => {
+      console.log(status)
+    })
   },
   computed: {
     ...mapState([
@@ -89,6 +91,7 @@ export default {
       'hideChiNhanhDetail',
       'fetchChiNhanh',
     ]),
+    ...mapActions(['afetchchinhanh']),
     // fetchchinhanh: function() {
     //   axios
     //     .get(`http://localhost:3000/chinhanh`)
