@@ -32,29 +32,18 @@
                 <thead class="thead-light" size="sm">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Tên chi nhánh</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th>công cụ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr v-for="item in chinhanh.list" :key="item.Id">
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
+                    <td>{{item.TenChiNhanh}}</td>
+                    <td>{{item.DiaChi}}</td>
+                    <td>{{item.SDT}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -72,7 +61,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from "axios";
+// import axios from "axios";
 import chinhanhmodal from './../components/chinhanh/chinhanhmodal'
 import tinhthanhddl from './../components/utils/tinhthanhddl'
 
@@ -86,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    this.fetchchinhanh();
+    this.fetchChiNhanh();
   },
   computed: {
     ...mapState([
@@ -98,18 +87,19 @@ export default {
       'increment',
       'showChiNhanhDetail',
       'hideChiNhanhDetail',
+      'fetchChiNhanh',
     ]),
-    fetchchinhanh: function() {
-      axios
-        .get(`http://localhost:3000/chinhanh`)
-        .then(res => {
-          this.list = res.data;
-          console.log(res);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
+    // fetchchinhanh: function() {
+    //   axios
+    //     .get(`http://localhost:3000/chinhanh`)
+    //     .then(res => {
+    //       this.list = res.data;
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       console.error(err);
+    //     });
+    // },
     test: function(){
       this.$store.commit('hideChiNhanhDetail')
       console.log(this.vsbdetail);

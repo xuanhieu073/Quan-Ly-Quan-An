@@ -9,6 +9,7 @@ export default new Vuex.Store({
     tinhthanhlist: undefined,
     count: 0,
     chinhanh:{
+      list: [],
       vsbdetail: false,
     },
   },
@@ -23,13 +24,21 @@ export default new Vuex.Store({
       axios.get(`http://localhost:3000/tinhthanh`)
       .then(res => {
         state.tinhthanhlist = res.data
-        console.log(res)
       })
       .catch(err => {
         console.error(err); 
       })
     },
     //chinhanh
+    fetchChiNhanh(state){
+      axios.get(`http://localhost:3000/chinhanh`)
+      .then(res => {
+        state.chinhanh.list = res.data;
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
     showChiNhanhDetail (state){
       state.chinhanh.vsbdetail = true
     },

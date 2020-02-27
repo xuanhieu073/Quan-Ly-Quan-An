@@ -1,6 +1,6 @@
 <template>
   <b-input-group size="sm" prepend="Tỉnh thành">
-    <b-form-select v-model="IdTinhThanh" :options="tinhthanhlist" value-field="Id" text-field="Name" size="sm">
+    <b-form-select v-model="IdTinhThanh" :options="tinhthanhlist" value-field="Id" text-field="NameVN" size="sm" @change="emitToParent">
         <template v-slot:first>
             <b-form-select-option :value="null">--none--</b-form-select-option>
         </template>
@@ -23,7 +23,10 @@ export default {
       this.fetchTinhThanh();
   },
   methods: {
-      ...mapMutations(["fetchTinhThanh"])
+    ...mapMutations(["fetchTinhThanh"]),
+    emitToParent () {
+      this.$emit('change', this.IdTinhThanh)
+    }
   },
 };
 </script>
