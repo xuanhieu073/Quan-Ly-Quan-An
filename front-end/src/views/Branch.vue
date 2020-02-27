@@ -98,7 +98,7 @@ export default {
     //     })
     //     .catch(err => {
     //       console.error(err);
-    //     });
+    //     });ss
     // },
     test: function(){
       this.$store.commit('hideChiNhanhDetail')
