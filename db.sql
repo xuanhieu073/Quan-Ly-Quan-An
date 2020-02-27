@@ -1,0 +1,13 @@
+CREATE TABLE `chinhanh` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `TenChiNhanh` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `DiaChi` varchar(145) DEFAULT NULL,
+  `SDT` varchar(13) DEFAULT NULL,
+  `IdTinhThanh` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tinhthanh` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
