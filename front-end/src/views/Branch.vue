@@ -23,7 +23,7 @@
               <b-row>
                 <b-col>
                   <b-button variant="primary" class="mt-2 float-left" size="sm">tìm kiếm</b-button>
-                  <b-button variant="primary" class="mt-2 float-right" size="sm" @click="showChiNhanhDetail">tạo chi nhánh</b-button>
+                  <b-button variant="primary" class="mt-2 float-right" size="sm" @click="showChiNhanhDetail()">tạo chi nhánh</b-button>
                 </b-col>
               </b-row>
             </b-list-group-item>
@@ -35,7 +35,7 @@
                     <th scope="col">Tên chi nhánh</th>
                     <th scope="col">Địa chỉ</th>
                     <th scope="col">Số điện thoại</th>
-                    <th>công cụ</th>
+                    <th style="width:100px">công cụ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,7 +43,21 @@
                     <th scope="row">1</th>
                     <td>{{item.TenChiNhanh}}</td>
                     <td>{{item.DiaChi}}</td>
-                    <td>{{item.SDT}}</td>
+                    <td>{{item.SDT}}</td> 
+                    <td>
+                      <b-row>
+                        <b-col class="px-0">
+                          <b-button variant="success" size="sm" @click="ShowEdit(item)">
+                            <BIconPencil />
+                          </b-button>
+                        </b-col>
+                        <b-col>
+                          <b-button variant="danger" size="sm">
+                            <BIconXCircle />
+                          </b-button>
+                        </b-col>
+                      </b-row>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -62,11 +76,12 @@
 <script>
 import { mapState,mapMutations,mapActions } from 'vuex'
 // import axios from "axios";
+import { BIconPencil, BIconXCircle } from "bootstrap-vue";
 import chinhanhmodal from './../components/chinhanh/chinhanhmodal'
 import tinhthanhddl from './../components/utils/tinhthanhddl'
 
 export default {
-  components: {chinhanhmodal,tinhthanhddl},
+  components: {chinhanhmodal,tinhthanhddl,BIconPencil,BIconXCircle},
   data() {
     return {
       list: [],
@@ -103,6 +118,9 @@ export default {
     //       console.error(err);
     //     });ss
     // },
+    ShowEdit(chinhanh){
+      this.showChiNhanhDetail(chinhanh)
+    },
     test: function(){
       this.$store.commit('hideChiNhanhDetail')
       console.log(this.vsbdetail);

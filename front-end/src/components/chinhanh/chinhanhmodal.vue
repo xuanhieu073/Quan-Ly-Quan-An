@@ -6,24 +6,24 @@
             <b-row>
                 <b-col cols="4" class="mt-2">
                     <label for="Tỉnh thành">Tỉnh thành</label>
-                    <tinhthanhddl @change="bindTinhThanh"/>
+                    <tinhthanhddl :IdTinhThanh="chinhanh.chinhanhslc.IdTinhThanh" @change="bindTinhThanh"/>
                 </b-col>
                 <b-col cols="8" class="mt-2">
                     <label for="Tên chi nhánh">Tên chi nhánh</label>
                     <b-input-group size="sm" prepend="Tên chi nhánh">
-                        <b-form-input v-model="TenChiNhanh" ></b-form-input>
+                        <b-form-input v-model="chinhanh.chinhanhslc.TenChiNhanh" ></b-form-input>
                     </b-input-group>
                 </b-col>
                 <b-col cols="4" class="mt-2">
                     <label for="Địa chỉ">Địa chỉ</label>
                     <b-input-group size="sm" prepend="Địa chỉ">
-                        <b-form-input v-model="DiaChi" ></b-form-input>
+                        <b-form-input v-model="chinhanh.chinhanhslc.DiaChi" ></b-form-input>
                     </b-input-group>
                 </b-col>
                 <b-col cols="4" class="mt-2">
                     <label for="Điện thoại">Điện thoại</label>
                     <b-input-group size="sm" prepend="Điện thoại">
-                        <b-form-input v-model="SDT" ></b-form-input>
+                        <b-form-input v-model="chinhanh.chinhanhslc.SDT" ></b-form-input>
                     </b-input-group>
                 </b-col>
             </b-row>
@@ -56,6 +56,13 @@ export default {
           SDT: "",
       }
   },
+  mounted () {
+    // console.log(this.chinhanh)
+    // this.IdTinhThanh = this.chinhanh.chinhanhslc.IdTinhThanh;
+    // this.TenChiNhanh = this.chinhanh.chinhanhslc.TenChiNhanh;
+    // this.DiaChi = this.chinhanh.chinhanhslc.DiaChi;
+    // this.SDT = this.chinhanh.chinhanhslc.SDT;
+  },
   computed: {
     ...mapState([
         'chinhanh',
@@ -65,14 +72,14 @@ export default {
   methods: {
     ...mapMutations(["showChiNhanhDetail", "hideChiNhanhDetail"]),
     bindTinhThanh (value) {
-      this.IdTinhThanh = value;
+      this.chinhanh.chinhanhslc.IdTinhThanh = value;
     },
     Submit(){
       const entity ={
-        TenChiNhanh: this.TenChiNhanh,
-        DiaChi: this.DiaChi,
-        SDT: this.SDT,
-        IdTinhThanh: this.IdTinhThanh,
+        TenChiNhanh: this.chinhanh.chinhanhslc.TenChiNhanh,
+        DiaChi: this.chinhanh.chinhanhslc.DiaChi,
+        SDT: this.chinhanh.chinhanhslc.SDT,
+        IdTinhThanh: this.chinhanh.chinhanhslc.IdTinhThanh,
       }
       axios.post(`http://localhost:3000/chinhanh`,entity)
       .then(res => {

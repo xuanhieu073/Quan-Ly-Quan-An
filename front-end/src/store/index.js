@@ -1,6 +1,6 @@
+import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -11,6 +11,7 @@ export default new Vuex.Store({
     chinhanh:{
       list: [],
       vsbdetail: false,
+      chinhanhslc: {}
     },
   },
   mutations: {
@@ -42,8 +43,9 @@ export default new Vuex.Store({
     comitchinhanhchange(state, list){
       state.chinhanh.list = list;
     },
-    showChiNhanhDetail (state){
-      state.chinhanh.vsbdetail = true
+    showChiNhanhDetail (state, chinhanh = {}){
+      state.chinhanh.chinhanhslc = chinhanh;
+      state.chinhanh.vsbdetail = true;
     },
     hideChiNhanhDetail (state){
       state.chinhanh.vsbdetail = false

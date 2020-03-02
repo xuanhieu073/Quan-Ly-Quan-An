@@ -1,6 +1,6 @@
 <template>
   <b-input-group size="sm" prepend="Tỉnh thành">
-    <b-form-select v-model="IdTinhThanh" :options="tinhthanhlist" value-field="Id" text-field="NameVN" size="sm" @change="emitToParent">
+    <b-form-select v-model="Id" :options="tinhthanhlist" value-field="Id" text-field="NameVN" size="sm" @change="emitToParent">
         <template v-slot:first>
             <b-form-select-option :value="null">--none--</b-form-select-option>
         </template>
@@ -11,9 +11,14 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 export default {
+  props: {
+    IdTinhThanh: {
+      type: Number,
+    },
+  },
   data() {
       return {
-          IdTinhThanh: null
+          Id: Number,
       }
   },
   computed: {
@@ -21,11 +26,12 @@ export default {
   },
   mounted() {
       this.fetchTinhThanh();
+      this.Id = this.IdTinhThanh;
   },
   methods: {
     ...mapMutations(["fetchTinhThanh"]),
     emitToParent () {
-      this.$emit('change', this.IdTinhThanh)
+      this.$emit('change', this.Id)
     }
   },
 };
