@@ -5,12 +5,10 @@ module.exports = {
     const sql = 'select * from chinhanh';
     return db.load(sql);
   },
-  loadAllWithDetails: () => {
-    const sql = `
-		select c.CatID, c.CatName, count(p.ProID) as num_of_products
-		from chinhanh c left join products p on c.CatID = p.CatID
-		group by c.CatID, c.CatName`;
-    return db.load(sql);
+  loadCondition: filter => {
+    const sql = `select * from chinhanh where IdTinhThanh = ${filter.idtt != 'undefined' ? filter.Idtt: 'IdTinhThanh'} `
+    console.log(sql)
+    db.load(sql);
   },
   loadById: id => {
     const sql = `select * from chinhanh where CatID = ${id}`;

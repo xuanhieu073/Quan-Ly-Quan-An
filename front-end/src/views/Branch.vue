@@ -11,19 +11,19 @@
                 </b-col>
                 <b-col>
                   <b-input-group size="sm" prepend="tên chi nhánh">
-                    <b-form-input></b-form-input>
+                    <b-form-input v-model="filter.tenchinhanh"></b-form-input>
                   </b-input-group>
                 </b-col>
                 <b-col>
                   <b-input-group size="sm" prepend="điện thoại">
-                    <b-form-input></b-form-input>
+                    <b-form-input v-model="filter.sdt"></b-form-input>
                   </b-input-group>
                 </b-col>
               </b-row>
               <b-row>
                 <b-col>
-                  <b-button variant="primary" class="mt-2 float-left" size="sm">tìm kiếm</b-button>
-                  <b-button variant="primary" class="mt-2 float-right" size="sm" @click="showChiNhanhDetail()">tạo chi nhánh</b-button>
+                  <b-button variant="primary" class="mt-2 float-left" size="sm" @click="onsearch()">tìm kiếm</b-button>
+                  <b-button variant="primary" class="mt-2 float-right" size="sm" @click="showcreate()">tạo chi nhánh</b-button>
                 </b-col>
               </b-row>
             </b-list-group-item>
@@ -69,7 +69,7 @@
         </b-tab>
       </b-tabs>
     </b-card>
-    <chinhanhmodal/>
+    <chinhanhmodal :isEdit="this.isEdit"/>
   </b-container>
 </template>
 
@@ -86,12 +86,16 @@ export default {
     return {
       list: [],
       provincelist: [{ value: 1, text: "a" }],
-      filter: {},
+      filter: {
+        idtt: undefined,
+        tenchinhanh: "",
+        sdt: "",
+      },
+      isEdit:false,
     };
   },
   async mounted() {
-    this.$store.dispatch('afetchchinhanh').then((status) => {
-      console.log(status)
+    this.$store.dispatch('afetchchinhanh').then(() => {
     })
   },
   computed: {
@@ -119,7 +123,15 @@ export default {
     //     });ss
     // },
     ShowEdit(chinhanh){
-      this.showChiNhanhDetail(chinhanh)
+      this.isEdit = true;
+      this.showChiNhanhDetail(chinhanh);
+    },
+    showcreate(){
+      this.isEdit = false;
+      this.showChiNhanhDetail();
+    },
+    onsearch(){
+      this.afetchchinhanh(this.filter);
     },
     test: function(){
       this.$store.commit('hideChiNhanhDetail')

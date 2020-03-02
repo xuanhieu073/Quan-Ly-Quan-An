@@ -43,18 +43,20 @@ export default new Vuex.Store({
     comitchinhanhchange(state, list){
       state.chinhanh.list = list;
     },
-    showChiNhanhDetail (state, chinhanh = {}){
+    showChiNhanhDetail(state, chinhanh = {}){
       state.chinhanh.chinhanhslc = chinhanh;
       state.chinhanh.vsbdetail = true;
     },
-    hideChiNhanhDetail (state){
+    hideChiNhanhDetail(state){
       state.chinhanh.vsbdetail = false
     }
   },
   actions: {
-    afetchchinhanh ({commit}) {
+    afetchchinhanh({commit}, filter = {}) {
+      console.log(filter);
       return new Promise((resolve,reject) => {
-        axios.get(`http://localhost:3000/chinhanh`)
+        axios.get(`http://localhost:3000/chinhanh?idtt=${filter.idtt}&tenchinhanh=${filter.tenchinhanh}&sdt=${filter.sdt}`,
+        )
         .then(res => {
           commit('comitchinhanhchange',res.data);
           resolve(200)

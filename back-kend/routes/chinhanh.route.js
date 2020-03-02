@@ -4,7 +4,8 @@ const chinhanhModel = require('../models/chinhanh.model');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-  const rows = await chinhanhModel.all();
+  console.log(req.query)
+  const rows = await chinhanhModel.loadCondition(req.query);
   res.json(rows);
 })
 
@@ -40,20 +41,30 @@ router.post('/', async (req, res) => {
     }
     res.status(201).json(ret);
   } catch (err) {
-
+    throw new Error(err);
   }
 })
 
-router.delete('/del', (req, res) => {
+router.delete('/', (req, res) => {
   res.json({
     msg: 'del'
   });
 })
 
-router.patch('/patch', (req, res) => {
-  res.json({
-    msg: 'patched'
-  });
+router.patch('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(isNaN(id)){
+    res.status(400).json('ivalid id');
+  }
+  try{
+    const results = await chinhanhModel.patch(id, req.body)
+    res.json({
+      msg: 'patched'
+    });
+  }
+  catch{err=>{
+    throw new Error(err);
+  }}
 })
 
 module.exports = router;

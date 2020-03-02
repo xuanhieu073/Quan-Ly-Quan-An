@@ -40,28 +40,25 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import axios from 'axios';
 import tinhthanhddl from './../../components/utils/tinhthanhddl'
 
 export default {
-  components: {
-      tinhthanhddl,
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
       return {
-          IdTinhThanh: null,
-          TenChiNhanh: "",
-          DiaChi: "",
-          SDT: "",
       }
   },
+  components: {
+      tinhthanhddl,
+  },
   mounted () {
-    // console.log(this.chinhanh)
-    // this.IdTinhThanh = this.chinhanh.chinhanhslc.IdTinhThanh;
-    // this.TenChiNhanh = this.chinhanh.chinhanhslc.TenChiNhanh;
-    // this.DiaChi = this.chinhanh.chinhanhslc.DiaChi;
-    // this.SDT = this.chinhanh.chinhanhslc.SDT;
   },
   computed: {
     ...mapState([
@@ -74,20 +71,61 @@ export default {
     bindTinhThanh (value) {
       this.chinhanh.chinhanhslc.IdTinhThanh = value;
     },
+    ...mapActions(['afetchchinhanh']),
     Submit(){
-      const entity ={
-        TenChiNhanh: this.chinhanh.chinhanhslc.TenChiNhanh,
-        DiaChi: this.chinhanh.chinhanhslc.DiaChi,
-        SDT: this.chinhanh.chinhanhslc.SDT,
-        IdTinhThanh: this.chinhanh.chinhanhslc.IdTinhThanh,
+        const entity ={
+          Id: this.chinhanh.chinhanhslc.Id,
+          TenChiNhanh: this.chinhanh.chinhanhslc.TenChiNhanh,
+          DiaChi: this.chinhanh.chinhanhslc.DiaChi,
+          SDT: this.chinhanh.chinhanhslc.SDT,
+          IdTinhThanh: this.chinhanh.chinhanhslc.IdTinhThanh,
+        }
+      if(this.isEdit){
+        axios.patch(`http://localhost:3000/chinhanh/${entity.Id}`,entity)
+        .then(res => {
+          console.log(res)
+          this.afetchchinhanh();
+            this.$swal({
+              icon: 'success',
+              title: 'sửa chi nhánh thành công',
+              showConfirmButton: false,
+              timer: 1500
+            })
+        })
+        .catch(err => {
+          console.error(err); 
+            this.$swal({
+              icon: 'warning',
+              title: 'lỗi',
+              showConfirmButton: false,
+              timer: 1500
+            })
+        })
       }
-      axios.post(`http://localhost:3000/chinhanh`,entity)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.error(err); 
-      })
+      else{
+        console.log('create');
+        axios.post(`http://localhost:3000/chinhanh`,entity)
+        .then(res => {
+          console.log(res)
+          this.afetchchinhanh();
+            this.$swal({
+              icon: 'success',
+              title: 'thêm chi nhánh thành công',
+              showConfirmButton: false,
+              timer: 1500
+            })
+        })
+        .catch(err => {
+          console.error(err); 
+            this.$swal({
+              icon: 'warning',
+              title: 'lỗi',
+              showConfirmButton: false,
+              timer: 1500
+            })
+        })
+        return;
+      }
     }
   }
 };
