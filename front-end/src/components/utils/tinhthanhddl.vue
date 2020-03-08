@@ -12,7 +12,7 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   props: {
-    IdTinhThanh: {
+    value: {
       type: Number,
     },
   },
@@ -26,12 +26,12 @@ export default {
   },
   mounted() {
       this.fetchTinhThanh();
-      this.Id = this.IdTinhThanh;
+      this.Id = this.value;
   },
   methods: {
     ...mapMutations(["fetchTinhThanh"]),
     emitToParent () {
-      this.$emit('change', this.Id)
+      this.$emit('input', this.Id)
     }
   },
 };

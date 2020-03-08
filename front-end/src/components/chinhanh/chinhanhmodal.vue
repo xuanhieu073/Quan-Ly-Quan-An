@@ -6,7 +6,7 @@
             <b-row>
                 <b-col cols="4" class="mt-2">
                     <label for="Tỉnh thành">Tỉnh thành</label>
-                    <tinhthanhddl :IdTinhThanh="chinhanh.chinhanhslc.IdTinhThanh" @change="bindTinhThanh"/>
+                    <tinhthanhddl :IdTinhThanh="chinhanh.chinhanhslc.IdTinhThanh" @input="bindTinhThanh"/>
                 </b-col>
                 <b-col cols="8" class="mt-2">
                     <label for="Tên chi nhánh">Tên chi nhánh</label>
@@ -82,8 +82,7 @@ export default {
         }
       if(this.isEdit){
         axios.patch(`http://localhost:3000/chinhanh/${entity.Id}`,entity)
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.afetchchinhanh();
             this.$swal({
               icon: 'success',
@@ -103,7 +102,6 @@ export default {
         })
       }
       else{
-        console.log('create');
         axios.post(`http://localhost:3000/chinhanh`,entity)
         .then(res => {
           console.log(res)
@@ -116,7 +114,7 @@ export default {
             })
         })
         .catch(err => {
-          console.error(err); 
+          console.error(err);
             this.$swal({
               icon: 'warning',
               title: 'lỗi',
@@ -126,7 +124,7 @@ export default {
         })
         return;
       }
-    }
+    },
   }
 };
 </script>

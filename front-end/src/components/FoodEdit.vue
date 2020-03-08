@@ -2,15 +2,15 @@
   <div class="card shadow mb-4">
     <h4 class="card-header">Danh sách món ăn</h4>
 
-    <div v-if="empty" class="card-body">
+    <!-- <div v-if="empty" class="card-body">
       <p class="card-text">Không có dữ liệu.</p>
-    </div>
+    </div> -->
 
-    <div v-else class="card-body">
+    <div class="card-body">
       <b-row>
         <b-col cols="8"></b-col>
         <b-col cols="4">
-          <b-button variant="primary float-right" @click="OnCreate()">Tạo mới</b-button>
+          <b-button variant="primary float-right mb-3" @click="OnCreate()">Tạo mới</b-button>
         </b-col>
       </b-row>
       <div class="row">

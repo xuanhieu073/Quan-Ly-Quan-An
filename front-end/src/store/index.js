@@ -53,7 +53,6 @@ export default new Vuex.Store({
   },
   actions: {
     afetchchinhanh({commit}, filter = {}) {
-      console.log(filter);
       return new Promise((resolve,reject) => {
         axios.get(`http://localhost:3000/chinhanh?idtt=${filter.idtt}&tenchinhanh=${filter.tenchinhanh}&sdt=${filter.sdt}`,
         )

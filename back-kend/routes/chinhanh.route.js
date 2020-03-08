@@ -1,16 +1,19 @@
 const express = require('express');
 const chinhanhModel = require('../models/chinhanh.model');
+const menuchinhanhModel = require('../models/menuchinhanh.model')
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
+  if(req.query.idtt == 'undefined') req.query.idtt = null
+  if(req.query.tenchinhanh == 'undefined') req.query.tenchinhanh = ''
+  if(req.query.sdt == 'undefined') req.query.sdt = ''
   console.log(req.query)
   const rows = await chinhanhModel.loadCondition(req.query);
   res.json(rows);
 })
 
 router.get('/:id', async (req, res) => {
-
   if (isNaN(req.params.id)) {
     return res.status(400).json({
       err: 'Invalid id.'
@@ -32,6 +35,14 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+router.get('/:id/cat/:catid/Food', async (req,res)=>{
+  const id = req.params.id
+  const catid = req.params.catid
+  const results = await menuchinhanhModel.loadbyCatId(id,catid);
+  res.json(results);
+})
+
+
 router.post('/', async (req, res) => {
   try {
     const results = await chinhanhModel.add(req.body);
@@ -45,10 +56,17 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.delete('/', (req, res) => {
-  res.json({
-    msg: 'del'
-  });
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id
+  if(isNaN(id))
+    res.status(400).json('ivalid id');
+  try{
+    const results = await chinhanhModel.del(id);
+    res.json(results);
+  }
+  catch(err){
+    throw new Error(err);
+  }
 })
 
 router.patch('/:id', async (req, res) => {
@@ -66,5 +84,6 @@ router.patch('/:id', async (req, res) => {
     throw new Error(err);
   }}
 })
+
 
 module.exports = router;
