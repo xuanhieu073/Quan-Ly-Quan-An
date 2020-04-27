@@ -26,6 +26,8 @@
 <script>
 import axios from 'axios'
 import FoodList from '@/components/FoodList.vue';
+import { mapState } from 'vuex';
+
 export default {
     components: {
         FoodList,
@@ -35,12 +37,15 @@ export default {
             list: []
         }
     },
+    computed: {
+      ...mapState(['user'])
+    },
     mounted () {
         this.fetch();
     },
     methods: {
         fetch() {
-            axios.get(`http://localhost:3000/categories`)
+            axios.get(`http://localhost:3000/categories`,{headers : {'x-access-token':this.user.token}})
             .then(rs => {
                 this.list = rs.data
             })

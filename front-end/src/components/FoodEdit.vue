@@ -78,7 +78,7 @@
           <label for="Category">Category</label>
             <b-input-group>
               <template>
-                <b-form-select v-model="prosec.CatID" :options="catlist" size="sm"></b-form-select>
+                <b-form-select v-model="prosec.CatID" :this.userions="catlist" size="sm"></b-form-select>
               </template>
             </b-input-group>
         </b-col> -->
@@ -104,6 +104,7 @@
 <script>
 import axios from "axios";
 import { BIconPencil, BIconXCircle } from "bootstrap-vue";
+import { mapState } from 'vuex';
 
 
 export default {
@@ -120,6 +121,10 @@ export default {
       prosec: {},
       catlist: [],
     };
+  },
+
+  computed: {
+    ...mapState(['user'])
   },
 
   mounted() {
@@ -147,10 +152,10 @@ export default {
       });
     },
     fetchCat(){
-      return axios.get(`http://localhost:3000/categories`);
+      return axios.get(`http://localhost:3000/categories`,{headers : {'x-access-token':this.user.token}});
     },
     fetchProduct(ProID){
-      axios.get(`http://localhost:3000/products/${ProID}`)
+      axios.get(`http://localhost:3000/products/${ProID}`,{headers : {'x-access-token':this.user.token}})
       .then(res => {
         console.log(res)
       })
@@ -160,7 +165,7 @@ export default {
     },
     fetchProducts(catId) {
       axios
-        .get(`http://localhost:3000/categories/${catId}/products`)
+        .get(`http://localhost:3000/categories/${catId}/products`,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           console.log(res);
           this.list = res.data;
@@ -184,7 +189,7 @@ export default {
     EditSubmit(){
       if(this.isEdit)
       {
-        axios.patch(`http://localhost:3000/products/${this.prosec.ProID}`,this.prosec)
+        axios.patch(`http://localhost:3000/products/${this.prosec.ProID}`,this.prosec,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           console.log(res)
           this.$swal({
@@ -229,7 +234,7 @@ export default {
       })
       .then((res)=>{
         if (res.value) {
-          axios.delete(`http://localhost:3000/products/${product.ProID}`)
+          axios.delete(`http://localhost:3000/products/${product.ProID}`,{headers : {'x-access-token':this.user.token}})
           .then(() => {
             for(let i =0;i<this.list.length;i++){
               if(this.list[i].ProID == product.ProID){

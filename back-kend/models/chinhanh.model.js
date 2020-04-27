@@ -13,6 +13,7 @@ module.exports = {
     const sql = `select * from chinhanh where CatID = ${id}`;
     return db.load(sql);
   },
+  
   add: entity => db.add(entity, 'chinhanh'),
 
   del: id => db.del({ id: id }, 'chinhanh'),

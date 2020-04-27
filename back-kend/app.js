@@ -2,6 +2,7 @@ const express = require('express');
 var cors = require('cors')
 const morgan = require('morgan');
 const createError = require('http-errors');
+const jwt = require('jsonwebtoken');
 require('express-async-errors');
 
 const app = express();
@@ -16,11 +17,29 @@ app.get('/', (req, res) => {
   });
 })
 
-app.use('/categories', require('./routes/category.route'));
-app.use('/products', require('./routes/product.route'));
-app.use('/chinhanh', require('./routes/chinhanh.route'));
-app.use('/tinhthanh', require('./routes/tinhthanh.route'));
-app.use('/menuchinhanh', require('./routes/menuchinhanh.route'));
+
+
+app.use('/api/auth', require('./routes/auth.route'));
+app.use('/api/users', require('./routes/user.route'));
+
+function verifyAccessToken(req, res, next) {
+  const token = req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, 'shhhhh', function (err, payload) {
+      if (err) throw createError(403, err);
+      
+      next();
+    });
+  } else {
+    throw createError(401, 'NO_TOKEN');
+  }
+}
+
+app.use('/categories',verifyAccessToken, require('./routes/category.route'));
+app.use('/products',verifyAccessToken, require('./routes/product.route'));
+app.use('/chinhanh',verifyAccessToken, require('./routes/chinhanh.route'));
+app.use('/tinhthanh',verifyAccessToken, require('./routes/tinhthanh.route'));
+app.use('/menuchinhanh',verifyAccessToken, require('./routes/menuchinhanh.route'));
 
 app.use((req, res, next) => {
   const err404 = createError(404, 'NOT FOUND');

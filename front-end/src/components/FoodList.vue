@@ -38,8 +38,9 @@
 
 <script>
 import axios from 'axios';
-    export default {
-        
+import { mapState } from 'vuex';
+
+export default {
   name: 'ProductsByCat',
   data() {
     return {
@@ -48,7 +49,9 @@ import axios from 'axios';
       hasMore: false
     };
   },
-
+  computed: {
+    ...mapState(['user'])
+  },
   mounted() {
     this.fetchProducts(this.$route.params.catId);
   },
@@ -66,7 +69,7 @@ import axios from 'axios';
 
     fetchProducts(catId) {
       axios
-        .get(`http://localhost:3000/categories/${catId}/products`)
+        .get(`http://localhost:3000/categories/${catId}/products`,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           this.list = res.data.products;
           this.hasMore = res.data.hasMore;

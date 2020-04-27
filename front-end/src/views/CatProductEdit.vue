@@ -7,6 +7,7 @@
 <script>
 import axios from "axios";
 import CategoriesList from '@/components/CategoriesEdit.vue';
+import { mapState } from 'vuex';
 export default {
   components: {
     CategoriesList,
@@ -18,10 +19,13 @@ export default {
   },
   mounted() {
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     fetchCategories: function() {
       axios
-        .get(`http://localhost:3000/categories`)
+        .get(`http://localhost:3000/categories`,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           this.categories = res.data;
           console.log(res);

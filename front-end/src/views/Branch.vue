@@ -39,8 +39,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in chinhanh.list" :key="item.Id">
-                    <th scope="row">1</th>
+                  <tr v-for="(item, index) in chinhanh.list" :key="item.Id">
+                    <th scope="row">{{index+1}}</th>
                     <td>{{item.TenChiNhanh}}</td>
                     <td>{{item.DiaChi}}</td>
                     <td>{{item.SDT}}</td> 
@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'chinhanh'
+      'chinhanh', 'user'
     ])
   },
   methods: {
@@ -135,7 +135,7 @@ export default {
       })
       .then((res)=>{
         if (res.value) {
-          axios.delete(`http://localhost:3000/chinhanh/${chinhanh.Id}`)
+          axios.delete(`http://localhost:3000/chinhanh/${chinhanh.Id}`,this.user.token)
           .then(() => {
             this.afetchchinhanh(this.filter);
             this.$swal(

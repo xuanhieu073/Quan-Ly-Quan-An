@@ -6,6 +6,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    user: {
+      token: localStorage.getItem('token'),
+      payload: localStorage.getItem('payload')
+    },
     tinhthanhlist: undefined,
     count: 0,
     chinhanh:{
@@ -13,6 +17,9 @@ export default new Vuex.Store({
       vsbdetail: false,
       chinhanhslc: {}
     },
+    category:{
+      list:[]
+    }
   },
   mutations: {
     //test
@@ -22,7 +29,7 @@ export default new Vuex.Store({
     //untils
     fetchTinhThanh(state){
       if(!state.tinhthanhlist)
-      axios.get(`http://localhost:3000/tinhthanh`)
+      axios.get(`http://localhost:3000/tinhthanh`,{headers : {'x-access-token': state.user.token}})
       .then(res => {
         state.tinhthanhlist = res.data
       })
@@ -30,14 +37,25 @@ export default new Vuex.Store({
         console.error(err); 
       })
     },
+    //user
+    setuser(state,user){
+      state.user = user;
+    },
     //chinhanh
     fetchChiNhanh(state){
-      axios.get(`http://localhost:3000/chinhanh`)
+      axios.get(`http://localhost:3000/chinhanh`,{headers : {'x-access-token':state.user.token}})
       .then(res => {
         state.chinhanh.list = res.data;
       })
       .catch(err => {
         console.error(err); 
+      })
+    },
+    //cat
+    fetchCategory(state){
+      axios.get(`http://localhost:3000/categories`,{headers : {'x-access-token':state.user.token}})
+      .then(res => {
+        state.category.list = res.data
       })
     },
     comitchinhanhchange(state, list){
@@ -52,10 +70,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    afetchchinhanh({commit}, filter = {}) {
+    afetchchinhanh({commit, state}, filter = {}) {
       return new Promise((resolve,reject) => {
-        axios.get(`http://localhost:3000/chinhanh?idtt=${filter.idtt}&tenchinhanh=${filter.tenchinhanh}&sdt=${filter.sdt}`,
-        )
+        axios.get(`http://localhost:3000/chinhanh?idtt=${filter.idtt}&tenchinhanh=${filter.tenchinhanh}&sdt=${filter.sdt}`,{headers : {'x-access-token': state.user.token}},)
         .then(res => {
           commit('comitchinhanhchange',res.data);
           resolve(200)

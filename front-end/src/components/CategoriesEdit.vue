@@ -43,7 +43,9 @@
 import axios from 'axios'
 import FoodEdit from '@/components/FoodEdit.vue';
 import {  BIconPencil,BIconXCircle,BIconCheck } from 'bootstrap-vue'
-    export default {
+import { mapState } from 'vuex';
+
+export default {
     components: {
       FoodEdit,
       BIconPencil,
@@ -59,12 +61,16 @@ import {  BIconPencil,BIconXCircle,BIconCheck } from 'bootstrap-vue'
             
         }
     },
+    computed: {
+      ...mapState(['user'])
+    },
     mounted () {
+      console.log(this.user)
         this.fetch();
     },
     methods: {
         fetch() {
-            axios.get(`http://localhost:3000/categories`)
+            axios.get(`http://localhost:3000/categories`,{headers : {'x-access-token':this.user.token}})
             .then(rs => {
                 rs.data.forEach(function (element) {
                   element.isEdit = false;
@@ -79,7 +85,7 @@ import {  BIconPencil,BIconXCircle,BIconCheck } from 'bootstrap-vue'
           const category = {
             CatName,
           };
-          axios.post(`http://localhost:3000/categories`,category)
+          axios.post(`http://localhost:3000/categories`,category,{headers : {'x-access-token':this.user.token}})
           .then(res => {
             this.list.push(res.data);
             this.isCreCat = false;
@@ -93,7 +99,7 @@ import {  BIconPencil,BIconXCircle,BIconCheck } from 'bootstrap-vue'
             CatID: item.CatID,
             CatName: item.CatName,
           };
-          axios.patch(`http://localhost:3000/categories/${item.CatID}`,category)
+          axios.patch(`http://localhost:3000/categories/${item.CatID}`,category,{headers : {'x-access-token':this.user.token}})
           .then(res => {
             console.log(res);
             item.isEdit = false;

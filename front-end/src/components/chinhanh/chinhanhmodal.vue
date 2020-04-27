@@ -6,7 +6,7 @@
             <b-row>
                 <b-col cols="4" class="mt-2">
                     <label for="Tỉnh thành">Tỉnh thành</label>
-                    <tinhthanhddl :IdTinhThanh="chinhanh.chinhanhslc.IdTinhThanh" @input="bindTinhThanh"/>
+                    <tinhthanhddl v-model="chinhanh.chinhanhslc.IdTinhThanh" />
                 </b-col>
                 <b-col cols="8" class="mt-2">
                     <label for="Tên chi nhánh">Tên chi nhánh</label>
@@ -63,7 +63,7 @@ export default {
   computed: {
     ...mapState([
         'chinhanh',
-        'tinhthanhlist'
+        'tinhthanhlist','user',
     ])
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
           IdTinhThanh: this.chinhanh.chinhanhslc.IdTinhThanh,
         }
       if(this.isEdit){
-        axios.patch(`http://localhost:3000/chinhanh/${entity.Id}`,entity)
+        axios.patch(`http://localhost:3000/chinhanh/${entity.Id}`,entity,{headers : {'x-access-token':this.user.token}})
         .then(() => {
           this.afetchchinhanh();
             this.$swal({
@@ -102,7 +102,7 @@ export default {
         })
       }
       else{
-        axios.post(`http://localhost:3000/chinhanh`,entity)
+        axios.post(`http://localhost:3000/chinhanh`,entity,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           console.log(res)
           this.afetchchinhanh();
