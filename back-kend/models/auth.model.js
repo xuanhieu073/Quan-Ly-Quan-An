@@ -10,7 +10,7 @@ module.exports = {
 
     const rows = await userModel.singleByUserName(entity.user);
     console.log(rows)
-    if (rows === 0)
+    if (!rows.length)
       return null;
 
     const hashPwd = rows[0].f_Password;

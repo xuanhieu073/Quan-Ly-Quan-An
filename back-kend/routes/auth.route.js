@@ -15,8 +15,9 @@ router.post('/', async (req, res) => {
   // }
 
   const ret = await authModel.login(req.body);
+  // console.log(ret) 
   if (ret === null) {
-    return res.json({
+    return res.status(400).json({
       authenticated: false
     });
   }
