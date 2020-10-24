@@ -31,6 +31,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  console.log(req.body);
   try {
     const results = await productModel.add(req.body);
     const ret = {

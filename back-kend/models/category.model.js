@@ -2,7 +2,7 @@ const db = require('../utils/db');
 
 module.exports = {
   all: () => {
-    const sql = 'select * from categories';
+    const sql = 'select * from categories ORDER BY CatID';
     return db.load(sql);
   },
   loadAllWithDetails: () => {
@@ -19,7 +19,7 @@ module.exports = {
 
   add: entity => db.add(entity, 'categories'),
 
-  del: id => db.del({ id: id }, 'categories'),
+  del: id => db.del({ CatID: id }, 'categories'),
 
   patch: (id, entity) => {
     delete entity.id;

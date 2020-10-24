@@ -15,3 +15,20 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+Vue.filter('capitalize', function (value) {
+  if (typeof value !== "number") {
+      return value;
+  }
+  var formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 0
+  });
+  return formatter.format(value);
+})
+
+Vue.filter('date', function (value) {
+  const d = new Date(value);
+  return d.getDate() + '-'+ d.getMonth()+1 + '-'+ d.getFullYear()
+})

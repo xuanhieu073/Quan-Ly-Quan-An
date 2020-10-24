@@ -1,6 +1,7 @@
 const express = require('express');
 const chinhanhModel = require('../models/chinhanh.model');
 const menuchinhanhModel = require('../models/menuchinhanh.model')
+const userModel = require('../models/user.model')
 
 const router = express.Router();
 
@@ -46,6 +47,13 @@ router.get('/:id/cat/:catid/Food', async (req,res)=>{
 router.post('/', async (req, res) => {
   try {
     const results = await chinhanhModel.add(req.body);
+    const user = userModel.add({
+      f_Name: req.body.TenChiNhanh,
+      f_Username: results.insertId,
+      f_Password: req.body.SDT,
+      f_Permission: 2,
+      f_ChiNhanhId: results.insertId
+    })
     const ret = {
       CatID: results.insertId,
       ...req.body

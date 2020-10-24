@@ -1,11 +1,17 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
 const productModel = require('../models/product.model');
+const menuchinhanhModel = require('../models/menuchinhanh.model')
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   const rows = await categoryModel.loadAllWithDetails();
+  res.json(rows);
+})
+
+router.get('/all', async (req, res, next) => {
+  const rows = await categoryModel.all();
   res.json(rows);
 })
 
@@ -42,6 +48,14 @@ router.get('/:id/products', async (req, res) => {
   return res.json(rows);
 });
 
+router.get('/:catid/chinhanh/:chinhanhid/products', async(req,res)=>{
+  const catid = req.params.catid
+  const chinhanhid = req.params.chinhanhid
+  
+  const rows = await menuchinhanhModel.loadbyCatId(chinhanhid,catid)
+  return res.json(rows);
+})
+
 router.post('/', async (req, res) => {
   try {
     const results = await categoryModel.add(req.body);
@@ -55,16 +69,31 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.delete('/del', (req, res) => {
-  res.json({
-    msg: 'del'
-  });
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  if (isNaN(id)) {
+    return res.status(400).json({
+      err: 'Invalid id.'
+    });
+  }
+  const resutls = await categoryModel.del(id);
+  res.json(resutls);
 })
 
-router.patch('/patch', (req, res) => {
-  res.json({
-    msg: 'patched'
-  });
+router.patch('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(isNaN(id)){
+    res.status(400).json('ivalid id');
+  }
+  try{
+    const results = await categoryModel.patch(id, req.body)
+    res.json({
+      msg: 'patched'
+    });
+  }
+  catch{err=>{
+    throw new Error(err);
+  }}
 })
 
 module.exports = router;

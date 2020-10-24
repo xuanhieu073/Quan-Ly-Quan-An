@@ -1,21 +1,24 @@
 <template>
     <div>
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="#">Menu</b-navbar-brand>
+    <b-navbar-brand href="#" :to="`/categories`">Menu</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item-dropdown
+        <!-- <b-nav-item-dropdown
           id="my-nav-dropdown"
           text="Chi nhánh"
           toggle-class="nav-link-custom"
           right
         >
           <b-dropdown-item :to="`/Branch`">Danh sách Chi nhánh</b-dropdown-item>
-        </b-nav-item-dropdown>
-        <b-nav-item :to="`/categories-list`">Danh mục</b-nav-item>
+        </b-nav-item-dropdown> -->
+        <b-nav-item :to="`/Branch`">Danh sách Chi nhánh</b-nav-item>
+        <b-nav-item :to="`/categories-list`" v-show="user.payload.permission == 1">Danh mục</b-nav-item>
+        <b-nav-item :to="`/categories`" v-show="!user.payload.permission">Danh sách món ăn</b-nav-item>
+        <b-nav-item :to="`/categoriescn`" v-show="user.payload.permission == 2">Danh sách món ăn</b-nav-item>
         <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
       </b-navbar-nav>
 
@@ -29,9 +32,8 @@
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <em>User</em>
+            <em>{{user.payload.f_Name}}</em>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item href="#" @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -52,6 +54,8 @@ import {mapState} from 'vuex'
       methods: {
         signout() {
           localStorage.setItem('token','');
+          localStorage.setItem('user','');
+          localStorage.setItem('cart','');
           window.location.href='http://localhost:8000/'
         }
       },

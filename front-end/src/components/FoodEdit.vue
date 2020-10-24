@@ -51,13 +51,13 @@
     <b-modal size="lg" id="modal-action" ref="modal-action" v-model="visible" :title="this.isEdit ? 'tạo mới' : '' ">
       <b-row>
         <b-col cols="4" class="mt-2">
-          <label for="ProName">ProName</label>
+          <label for="ProName">Tên món ăn</label>
           <b-input-group size="sm" prepend="ProName">
             <b-form-input v-model="prosec.ProName" ></b-form-input>
           </b-input-group>
         </b-col>
         <b-col cols="4" class="mt-2">
-          <label for="TinyDes">TinyDes</label>
+          <label for="TinyDes">Mô tả</label>
           <b-input-group size="sm" prepend="TinyDes">
             <b-form-input v-model="prosec.TinyDes"></b-form-input>
           </b-input-group>
@@ -69,7 +69,7 @@
           </b-input-group>
         </b-col> -->
         <b-col cols="4" class="mt-2">
-          <label for="Price">Price</label>
+          <label for="Price">Giá</label>
           <b-input-group size="sm" prepend="Price">
             <b-form-input v-model="prosec.Price"></b-form-input>
           </b-input-group>
@@ -82,13 +82,13 @@
               </template>
             </b-input-group>
         </b-col> -->
-        <b-col cols="4" class="mt-2">
+        <!-- <b-col cols="4" class="mt-2">
           <label>Quantity</label>
           <b-input-group size="sm" prepend="Quantity" >
             <b-form-input v-model="prosec.Quantity"></b-form-input>
           </b-input-group>
         </b-col>
-        <b-col></b-col>
+        <b-col></b-col> -->
       </b-row>
 
       <template v-slot:modal-footer>
@@ -205,7 +205,7 @@ export default {
       }
       else
       {
-        axios.post(`http://localhost:3000/products`,this.prosec)
+        axios.post(`http://localhost:3000/products`,this.prosec,{headers : {'x-access-token':this.user.token}})
         .then(res => {
           console.log(res);
           this.list.push(res.data)

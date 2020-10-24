@@ -109,8 +109,9 @@ export default {
             this.$swal({
               icon: 'success',
               title: 'thêm chi nhánh thành công',
-              showConfirmButton: false,
-              timer: 1500
+              text: `tài khoản được cấp username: ${res.data.CatID} - password: ${res.data.SDT}`,
+              showConfirmButton: true,
+              // timer: 1500
             })
         })
         .catch(err => {
@@ -118,8 +119,8 @@ export default {
             this.$swal({
               icon: 'warning',
               title: 'lỗi',
-              showConfirmButton: false,
-              timer: 1500
+              showConfirmButton: true,
+              // timer: 1500
             })
         })
         return;

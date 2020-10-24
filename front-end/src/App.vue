@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopMenu/>
+    <TopMenu v-show="user.token"/>
     <router-view/>
   </div>
 </template>
@@ -29,9 +29,13 @@
 </style>
 <script>
 import TopMenu from '@/components/TopMenu.vue';
+import { mapState } from 'vuex';
 export default {
   components: {
     TopMenu,
+  },
+  computed: {
+    ...mapState(['user'])
   },
 }
 </script>

@@ -32,6 +32,7 @@
                 <thead class="thead-light" size="sm">
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Tên chi nhánh</th>
                     <th scope="col">Địa chỉ</th>
                     <th scope="col">Số điện thoại</th>
@@ -41,18 +42,19 @@
                 <tbody>
                   <tr v-for="(item, index) in chinhanh.list" :key="item.Id">
                     <th scope="row">{{index+1}}</th>
+                    <td>{{item.Id}}</td>
                     <td>{{item.TenChiNhanh}}</td>
                     <td>{{item.DiaChi}}</td>
                     <td>{{item.SDT}}</td> 
                     <td>
                       <b-row>
                         <b-col class="px-0">
-                          <b-button variant="success" size="sm" @click="ShowEdit(item)">
+                          <b-button v-show="user.payload.permission == 1" variant="success" size="sm" @click="ShowEdit(item)">
                             <BIconPencil />
                           </b-button>
                         </b-col>
                         <b-col>
-                          <b-button variant="danger" size="sm" @click="ondelete(item)">
+                          <b-button v-show="user.payload.permission == 1" variant="danger" size="sm" @click="ondelete(item)">
                             <BIconXCircle />
                           </b-button>
                         </b-col>
@@ -96,6 +98,7 @@ export default {
     };
   },
   async mounted() {
+    console.log(this.user.payload.permission)
     this.$store.dispatch('afetchchinhanh').then(() => {
     })
   },
@@ -135,7 +138,7 @@ export default {
       })
       .then((res)=>{
         if (res.value) {
-          axios.delete(`http://localhost:3000/chinhanh/${chinhanh.Id}`,this.user.token)
+          axios.delete(`http://localhost:3000/chinhanh/${chinhanh.Id}`,{headers : {'x-access-token':this.user.token}})
           .then(() => {
             this.afetchchinhanh(this.filter);
             this.$swal(

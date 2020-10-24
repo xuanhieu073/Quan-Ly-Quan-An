@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 require('express-async-errors');
+const path = require('path');
 
 const app = express();
 
@@ -35,11 +36,17 @@ function verifyAccessToken(req, res, next) {
   }
 }
 
+var staticDir = express.static(
+  path.resolve(__dirname, 'public')
+);
+app.use(staticDir);
+
 app.use('/categories',verifyAccessToken, require('./routes/category.route'));
 app.use('/products',verifyAccessToken, require('./routes/product.route'));
 app.use('/chinhanh',verifyAccessToken, require('./routes/chinhanh.route'));
 app.use('/tinhthanh',verifyAccessToken, require('./routes/tinhthanh.route'));
 app.use('/menuchinhanh',verifyAccessToken, require('./routes/menuchinhanh.route'));
+app.use('/donhang',verifyAccessToken, require('./routes/donhang.route'));
 
 app.use((req, res, next) => {
   const err404 = createError(404, 'NOT FOUND');

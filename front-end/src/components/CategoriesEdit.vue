@@ -14,7 +14,8 @@
           <label v-if="!item.isEdit">{{ item.CatName }}</label>
           <input v-if="item.isEdit" v-model="item.CatName" type="text" />
           <span v-if="item.isEdit" class="badge badge-success float-right " @click="editCat(item)"><BIconCheck/></span>
-          <span v-if="!item.isEdit" v-show="item.num_of_products" class="badge badge-danger float-right">{{item.num_of_products}}</span>
+          <span v-if="!item.isEdit" class="badge badge-danger float-right" @click="deleteCat(item)"><BIconXSquareFill/></span>
+          <!-- <span v-if="!item.isEdit" v-show="item.num_of_products" class="badge badge-danger float-right">{{item.num_of_products}}</span> -->
         </b-list-group-item>
         <b-list-group-item href="#" v-if="!isCreCat">
           <b-button variant="primary" @click="isCreCat = true">Thêm</b-button>
@@ -42,7 +43,7 @@
 <script>
 import axios from 'axios'
 import FoodEdit from '@/components/FoodEdit.vue';
-import {  BIconPencil,BIconXCircle,BIconCheck } from 'bootstrap-vue'
+import {  BIconPencil,BIconXCircle,BIconCheck,BIconXSquareFill } from 'bootstrap-vue'
 import { mapState } from 'vuex';
 
 export default {
@@ -51,6 +52,7 @@ export default {
       BIconPencil,
       BIconXCircle,
       BIconCheck,
+      BIconXSquareFill,
     },
     data() {
         return {
@@ -70,7 +72,7 @@ export default {
     },
     methods: {
         fetch() {
-            axios.get(`http://localhost:3000/categories`,{headers : {'x-access-token':this.user.token}})
+            axios.get(`http://localhost:3000/categories/all`,{headers : {'x-access-token':this.user.token}})
             .then(rs => {
                 rs.data.forEach(function (element) {
                   element.isEdit = false;
@@ -107,6 +109,11 @@ export default {
           .catch(err => {
             console.error(err); 
           })
+        },
+        async deleteCat(item){
+          const res = await axios.delete(`http://localhost:3000/categories/${item.CatID}`,{headers : {'x-access-token':this.user.token}})
+          console.log(res)
+          window.location.href = `http://localhost:8000/#/cat-product-edit/8/food`
         }
       }
     }

@@ -5,14 +5,19 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'Home',
+    component: () => import('../views/Login.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/',
-    name: 'Home',
-    component: () => import('../views/Login.vue')
+    path: '/signup',
+    name: 'SignUp',
+    component: () => import('../views/SignUp.vue')
   },
   {
     path: '/about',
@@ -28,9 +33,49 @@ const routes = [
     component: () => import('../views/Categories.vue')
   },
   {
-    path: '/categories/:catId/food',
+    path: '/bill',
+    name: 'Bill',
+    component: () => import('../views/Bill.vue')
+  },
+  {
+    path: '/bill/:banid',
+    name: 'BillCN',
+    component: () => import('../views/BillCN.vue')
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import('../views/History.vue')
+  },
+  {
+    path: '/history/:donhangid',
+    name: 'History',
+    component: () => import('../views/History.vue')
+  },
+  {
+    path: '/historycn/:banid',
+    name: 'HistoryCN',
+    component: () => import('../views/HistoryCN.vue')
+  },
+  {
+    path: '/historycn/:banid/:donhangid',
+    name: 'HistoryCN',
+    component: () => import('../views/HistoryCN.vue')
+  },
+  {
+    path: '/categories/:catId/chinhanh/:chinhanhId/food',
     name: 'CategoriesFood',
     component: () => import('../views/Categories.vue')
+  },
+  {
+    path: '/categoriescn',
+    name: 'CategoriesCN',
+    component: () => import('../views/CategoriesCN.vue')
+  },
+  {
+    path: '/categoriescn/:catId/chinhanh/:chinhanhId/food',
+    name: 'CategoriesFood',
+    component: () => import('../views/CategoriesCN.vue')
   },
   {
     path: '/categories-list',

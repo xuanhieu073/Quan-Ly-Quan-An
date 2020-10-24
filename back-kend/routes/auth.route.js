@@ -16,14 +16,15 @@ router.post('/', async (req, res) => {
 
   const ret = await authModel.login(req.body);
   if (ret === null) {
-    return res.json({
+    return res.status(400).json({
       authenticated: false
     });
   }
 
   const payload = {
     userId: ret.f_ID,
-    permission: ret.f_Permission
+    permission: ret.f_Permission,
+    ...ret
   }
   const token = jwt.sign(payload, 'shhhhh', {
     expiresIn: 10 * 60 * 1000 // 10 mins

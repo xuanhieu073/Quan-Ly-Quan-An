@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     user: {
       token: localStorage.getItem('token'),
-      payload: localStorage.getItem('payload')
+      payload: (localStorage.getItem('payload')) ?  JSON.parse(localStorage.getItem('payload')) : {}
     },
     tinhthanhlist: undefined,
     count: 0,
@@ -19,7 +19,8 @@ export default new Vuex.Store({
     },
     category:{
       list:[]
-    }
+    },
+    cart: (localStorage.getItem('cart')) ?  JSON.parse(localStorage.getItem('cart')) : []
   },
   mutations: {
     //test
@@ -67,7 +68,12 @@ export default new Vuex.Store({
     },
     hideChiNhanhDetail(state){
       state.chinhanh.vsbdetail = false
-    }
+    },
+    //cart
+    setcart(state,cart){
+      state.cart = [...cart]
+      localStorage.setItem('cart', JSON.stringify(cart));
+    },
   },
   actions: {
     afetchchinhanh({commit, state}, filter = {}) {

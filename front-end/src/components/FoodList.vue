@@ -8,19 +8,19 @@
 
     <div v-else class="card-body">
       <div class="row">
-        <div class="col-sm-4 mb-3" v-for="item in list" :key="item.ProID">
+        <div class="col-sm-4 mb-3" v-for="item in list" :key="item.ProID" v-show="item.check == 1">
           <div class="card h-100">
             <img :src="`http://localhost:3000/imgs/sp/${item.ProID}/main_thumbs.jpg`" :alt="item.ProName" :title="item.ProName" class="card-img-top" />
             <div class="card-body">
               <h6 class="card-title">{{item.ProName}}</h6>
-              <h5 class="card-title text-danger">{{format(item.Price)}}</h5>
+              <h5 class="card-title text-danger">{{ item.Price  | capitalize}}</h5>
               <p class="card-text">{{item.TinyDes}}</p>
             </div>
             <div class="card-footer text-center">
-              <b-link class="btn btn-sm btn-outline-primary mr-2" :to="`/products/${item.ProID}`" event="">
+              <!-- <b-link class="btn btn-sm btn-outline-primary mr-2" :to="`/products/${item.ProID}`" event="">
                 Details
-              </b-link>
-              <b-link event="" class="btn btn-sm btn-outline-success">
+              </b-link> -->
+              <b-link  class="btn btn-sm btn-outline-success" @click="addcart(item)">
                 Add to cart
               </b-link>
             </div>
@@ -38,7 +38,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'ProductsByCat',
@@ -46,41 +46,55 @@ export default {
     return {
       list: [],
       empty: true,
-      hasMore: false
+      hasMore: false,
+      tempcart: [],
     };
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user','cart'])
   },
   mounted() {
-    this.fetchProducts(this.$route.params.catId);
+    // this.fetchProducts(this.$route.params.catId);
+    const check = localStorage.getItem("cart")
+    this.tempcart = check ? JSON.parse(localStorage.getItem('cart')) : []
   },
 
   watch: {
     $route(to) {
-      this.fetchProducts(to.params.catId);
+        this.fetchProducts(to.params.catId,to.params.chinhanhId);
     }
   },
 
   methods: {
-    format(val) {
-      return `${val} đ`;
-    },
-
-    fetchProducts(catId) {
+    ...mapMutations(['setcart']),
+    ...mapActions(['']),
+    fetchProducts(catId, chinhanhId) {
       axios
-        .get(`http://localhost:3000/categories/${catId}/products`,{headers : {'x-access-token':this.user.token}})
+        .get(`http://localhost:3000/categories/${catId}/chinhanh/${chinhanhId}/products`,{headers : {'x-access-token':this.user.token}})
         .then(res => {
-          this.list = res.data.products;
-          this.hasMore = res.data.hasMore;
+          this.list = res.data;
+          // this.hasMore = res.data.hasMore;
           this.empty = this.list.length === 0;
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    addcart(food){
+      const found = this.tempcart.find(e => e.ProID == food.ProID)
+      if(found){
+        found.num_of_products ++;
+        this.setcart(this.tempcart);
+      }
+      else{
+        food.num_of_products = 1;
+        food.chinhanhId = this.$route.params.chinhanhId;
+        this.tempcart.push(food)
+        this.setcart(this.tempcart);
+      }
     }
   }
-    }
+}
 </script>
 
 <style lang="scss" scoped>
