@@ -27,6 +27,7 @@ export class login extends Component {
             const res = await this.userService.Login({user,pwd})
             if(res.status === 200){
                 alert("authorized")
+                window.location = '/'
             }
         }
         catch(err){

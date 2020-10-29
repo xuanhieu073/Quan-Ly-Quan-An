@@ -7,14 +7,14 @@ module.exports = {
     //   user: 'test',
     //   pwd: 'test'
     // }
-    console.log(entity)
-    const rows = await userModel.singleByUserName(entity.f_Username);
-    console.log(rows)
+    // console.log(entity)
+    const rows = await userModel.singleByUserName(entity.user);
+    // console.log(rows)
     if (!rows.length)
       return null;
 
     const hashPwd = rows[0].f_Password;
-    if (bcrypt.compareSync(entity.f_Password, hashPwd)) {
+    if (bcrypt.compareSync(entity.pwd, hashPwd)) {
       return rows[0];
     }
 

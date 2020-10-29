@@ -41,7 +41,7 @@ var staticDir = express.static(
 );
 app.use(staticDir);
 
-app.use('/categories',verifyAccessToken, require('./routes/category.route'));
+app.use('/api/categories',verifyAccessToken, require('./routes/category.route'));
 app.use('/products',verifyAccessToken, require('./routes/product.route'));
 app.use('/chinhanh',verifyAccessToken, require('./routes/chinhanh.route'));
 app.use('/tinhthanh',verifyAccessToken, require('./routes/tinhthanh.route'));

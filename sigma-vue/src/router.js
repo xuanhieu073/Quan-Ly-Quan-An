@@ -22,6 +22,11 @@ export default new Router({
 			component: ()=>import('./components/register.vue')
 		},
 		{
+			path: '/cat/:id/products',
+			name: 'products',
+			component: ()=>import('./components/product.vue')
+		},
+		{
 			path: '/dashboard',
 			name: 'dashboard',
 			component: Dashboard

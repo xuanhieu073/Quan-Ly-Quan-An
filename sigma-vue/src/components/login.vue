@@ -16,7 +16,7 @@
           <span class="p-inputgroup-addon">
             <i class="pi pi-lock"></i>
           </span>
-          <Password v-model="password" placeholder="Password" />
+          <Password v-model="password" @keyup.enter="login" placeholder="Password" />
         </div>
       </div>
     </div>
@@ -45,15 +45,17 @@
 				password: '',
 			}
 		},
-		authService: null,
+    authService: null,
 		created () {
 			this.authService = new AuthService();
 		},
 		methods: {
-			login() {
-				console.log(this.username+'_'+this.password);
-				this.authService.login({user:this.username,pwd:this.password}).then(data => console.log(data))
-				// window.location='/#/'
+			async login() {
+        const res = await this.authService.login({user:this.username,pwd:this.password})
+        // console.log(res)
+        localStorage.setItem('user',JSON.stringify(res.data))
+        // window.location='/#/cat/0/products'
+        this.$router.push('/cat/0/products')
 			}
 		},
 	};
